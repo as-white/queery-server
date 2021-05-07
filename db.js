@@ -21,14 +21,18 @@ sequelize.authenticate().then(
 );
 
 
-const UserTwo = sequelize.import('./models/usercaretaker');
+const User = sequelize.import('./models/users');
 const CaretakerInfo = sequelize.import('./models/caretakerinfo');
-UserTwo.hasOne(CaretakerInfo)
-CaretakerInfo.belongsTo(UserTwo)
+const GuardianInfo = sequelize.import('./models/guardianinfo')
+User.hasOne(CaretakerInfo)
+CaretakerInfo.belongsTo(User)
+User.hasOne(GuardianInfo)
+GuardianInfo.belongsTo(User)
 
 module.exports = {
-    UserTwo,
+    User,
     CaretakerInfo,
+    GuardianInfo,
   };
   
 

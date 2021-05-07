@@ -1,16 +1,5 @@
 module.exports = (sequelize, DataTypes) => {
-    const Info = sequelize.define('info', {
-        // firstname: req.body.firstname,
-        // lastname: req.body.lastname,
-        // photourl: req.body.photourl,
-        // citylocation: req.body.citylocation,
-        // statelocation: req.body.statelocation,
-        // bio: req.body.description,
-        // age: req.body.age,
-        // yearsofexperience: req.body.experience,
-        // preferredage: req.body.preferredage,
-        // distancewilling: req.body.distancewilling,
-        // ownerid: req.user.id
+    const InfoTwo = sequelize.define('caretaker', {
         
         firstname: {
             type: DataTypes.STRING,
@@ -31,6 +20,14 @@ module.exports = (sequelize, DataTypes) => {
         statelocation: {
             type: DataTypes.STRING,
             allowNull: true
+        },
+        zipcode: {
+            type: DataTypes.INTEGER,
+            allowNull: false
+        },
+        street: {
+            type: DataTypes.STRING,
+            allowNull: false
         },
         bio: {
             type: DataTypes.STRING,
@@ -53,5 +50,5 @@ module.exports = (sequelize, DataTypes) => {
             allowNull: true
         }
     })
-    return Info;
+    return InfoTwo;
 } 

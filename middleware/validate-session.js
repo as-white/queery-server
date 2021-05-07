@@ -1,35 +1,32 @@
 const jwt = require('jsonwebtoken');
-const UserTwo = require('../db').import('../models/usercaretaker');
-
+const User = require('../db').import('../models/users');
 const validateSession = (req, res, next) => {
     const token = req.headers.authorization;
-    console.log('token --> ', token);
-
+    console.log('token-->', token);
     if (!token) {
-        return res.status(403).send({ auth: false, message: "No token provided." })
+        return res.status(403).send({ auth: false, message: "No token provided" })
     } else {
         jwt.verify(token, process.env.JWT_SECRET, (err, decodeToken) => {
-            console.log('decodeToken --> ', decodeToken);
+            console.log('decodeToken -->', decodeToken);
             if (!err && decodeToken) {
-                UserTwo.findOne({
+                User.findOne({
                     where: {
                         id: decodeToken.id
                     }
                 })
-                .then (usercaretaker => {
-                    console.log('usercaretaker --> ', usercaretaker);
-                    if (!usercaretaker) throw err;
-                    console.log('req --> ', req)
-                    req.usercaretaker = usercaretaker;
-                    return next();
-                })
-                .catch(err => next(err));
+                    .then(user => {
+                        console.log('user -->', user);
+                        if (!user) throw err;
+                        console.log('req -->', req);
+                        req.user = user;
+                        return next();
+                    })
+                    .catch(err => next(err));
             } else {
                 req.errors = err;
                 return res.status(500).send('Not Authorized');
-            };
-        })
-    };
+            }
+        });
+    }
 };
-
 module.exports = validateSession;

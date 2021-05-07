@@ -23,9 +23,9 @@ const sequelize = require('./db');
 //import JSON support for Express
 app.use(express.json());
 
-let info = require('./controllers/caretakerinfocontroller');
-let caretaker = require('./controllers/usercaretakercontroller');
-let guardian = require('./controllers/userclientcontroller');
+let users = require('./controllers/usercontroller');
+let caretaker = require('./controllers/caretakerinfocontroller');
+let guardian = require('./controllers/guardianinfocontroller');
 
 sequelize.sync();
 // sequelize.sync({force: true});  //If we need to force a db change
@@ -33,9 +33,9 @@ sequelize.sync();
 // header configuration for client requests
 app.use(require('./middleware/headers'));
 
-app.use('/caretaker', caretaker);
-app.use('/guardian', guardian);
-app.use('/caretakerinfo', info)
+app.use('/caretakerinfo', caretaker);
+app.use('/guardianinfo', guardian);
+app.use('/users', users)
 
 // file upload api
 // app.post('/upload', async (req, res, next) => {

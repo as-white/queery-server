@@ -1,17 +1,17 @@
 let express = require('express');
 const Sequelize = require('../db');
-const InfoTwo = require('../db').import('../models/caretakerinfo');
+const InfoOne = require('../db').import('../models/guardianinfo');
 const router = express.Router();
 const validateSession = require ('../middleware/validate-session');
 
 router.get('/', validateSession, (req, res) => {
-    InfoTwo.findAll()
+    Info.findAll()
         .then(infos => res.status(200).json(infos))
         .catch(err => res.status(500).json({error: err}))
 });
 
 router.get('/mine', validateSession, (req, res) => {
-    InfoTwo.findAll({
+    InfoOne.findAll({
         where: { userId: req.user.id }
     })
     .then(infos => {
@@ -24,27 +24,21 @@ router.post('/', validateSession, function (req, res) {
     const infoEntry = {
         firstname: req.body.firstname,
         lastname: req.body.lastname,
-        photourl: req.body.photourl,
         citylocation: req.body.citylocation,
         statelocation: req.body.statelocation,
         zipcode: req.body.zipcode,
         street: req.body.street,
-        bio: req.body.bio,
-        age: req.body.age,
-        experience: req.body.experience,
-        preferredage: req.body.preferredage,
-        distancewilling: req.body.distancewilling,
         userId: req.user.id
     }
 
-    InfoTwo.create(infoEntry)
+    InfoOne.create(infoEntry)
     .then(info => res.status(200).json(info))
     .catch(err => res.status(500).json({ error: err }));
 });
 
 
 router.get('/:userId', validateSession, function (req, res) {
-    InfoTwo.findOne({
+    Info.findOne({
         where: { userId: req.user.id, id: req.params.id }
     })
     .then(info => res.status(200).json(info))
@@ -62,7 +56,7 @@ router.get('/:userId', validateSession, function (req, res) {
 
 
 router.get('/genderidentity/:genderidentity', validateSession, function (req, res) {
-    InfoTwo.findAll({
+    Info.findAll({
         where: 
             Sequelize.where(
                 Sequelize.fn('lower', Sequelize.col('genderidentity')), req.params.gender.toLowerCase())
@@ -75,21 +69,15 @@ router.put('/:id', validateSession, function (req, res){
     const updateInfo = {
         firstname: req.body.firstname,
         lastname: req.body.lastname,
-        photourl: req.body.photourl,
         citylocation: req.body.citylocation,
         statelocation: req.body.statelocation,
         zipcode: req.body.zipcode,
-        street: req.body.street,
-        bio: req.body.description,
-        age: req.body.age,
-        experience: req.body.experience,
-        preferredage: req.body.preferredage,
-        distancewilling: req.body.distancewilling
+        street: req.body.street
     };
 
     const query = {where: { id: req.params.id, userId: req.user.id}};
 
-    InfoTwo.update(updateInfo, query)
+    Info.update(updateInfo, query)
     .then(info => res.status(200).json(info))
     .catch(err => res.status(500).json({error:err}))
 });
@@ -116,12 +104,5 @@ router.get('/state/:state', validateSession, function (req, res) {
     .catch(err => res.status(500).json({ error: err }));
 });
 
-router.delete('/:id', validateSession, function (req, res) {
-    const query = {where: {id: req.params.id, userId: req.user.id}};
-
-    InfoTwo.destroy(query)
-    .then(() => res.status(200).json({message: "Profile Removed"}))
-    .catch((err) => res.status(500).json({error: err}));
-});
 
 module.exports = router;
