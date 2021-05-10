@@ -99,7 +99,7 @@ router.get('/byid/:id', function (req, res) {
 })
 
 // Get all users
-router.get('/currentguardian', validateSession, function (req, res) {
+router.get('/current', validateSession, function (req, res) {
     // console.log(req.user.id);
     User.findOne({
         where: { id: req.user.id }

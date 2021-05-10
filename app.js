@@ -26,6 +26,7 @@ app.use(express.json());
 let users = require('./controllers/usercontroller');
 let caretaker = require('./controllers/caretakerinfocontroller');
 let guardian = require('./controllers/guardianinfocontroller');
+let guardianposts = require('./controllers/guardianpostcontroller');
 
 sequelize.sync();
 // sequelize.sync({force: true});  //If we need to force a db change
@@ -35,6 +36,7 @@ app.use(require('./middleware/headers'));
 
 app.use('/caretakerinfo', caretaker);
 app.use('/guardianinfo', guardian);
+app.use('/posts', guardianposts)
 app.use('/users', users)
 
 // file upload api

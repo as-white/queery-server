@@ -23,11 +23,14 @@ sequelize.authenticate().then(
 
 const User = sequelize.import('./models/users');
 const CaretakerInfo = sequelize.import('./models/caretakerinfo');
-const GuardianInfo = sequelize.import('./models/guardianinfo')
+const GuardianInfo = sequelize.import('./models/guardianinfo');
+const GuardianPosts = sequelize.import('./models/guardianposts')
 User.hasOne(CaretakerInfo)
 CaretakerInfo.belongsTo(User)
 User.hasOne(GuardianInfo)
+User.hasMany(GuardianPosts)
 GuardianInfo.belongsTo(User)
+GuardianPosts.belongsTo(User)
 
 module.exports = {
     User,
